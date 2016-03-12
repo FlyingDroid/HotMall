@@ -1,0 +1,136 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+def keyStore = file('hotmall.jks')
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.hotmall"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode new Date().format("yyyyMMdd").toInteger() * 1000 + 1
+        versionName "1.0"
+        resValue "string", "tray__authority", "${applicationId}.tray"
+        multiDexEnabled false
+        resConfigs "zh"
+        sourceSets.main {
+            jniLibs.srcDir 'libs'
+            jni.srcDirs = []
+        }
+    }
+    signingConfigs {
+        signingConfig {
+            try {
+                keyAlias 'timeface'
+                keyPassword project.hasProperty('KEY_PASSWORD') ? KEY_PASSWORD : ''
+                storeFile file('../hotmall.jks')
+                storePassword project.hasProperty('STORE_PASSWORD') ? STORE_PASSWORD : ''
+            }
+            catch (ex) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            buildConfigField "String", "API_URL", '"http://github.com"'
+            versionNameSuffix '-' + new Date().format("yyyyMMddHHmm")
+        }
+        release {
+            buildConfigField "String", "API_URL", '"http://github.com"'
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (keyStore.exists()) {
+                println "hotmall: using project's key"
+                signingConfig signingConfigs.signingConfig
+            } else {
+                println "hotmall: using default key"
+            }
+
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = "hotmall_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+        productFlavors {
+            GooglePlay {
+                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "GooglePlay"]
+            }
+            Umeng {
+                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Umeng"]
+            }
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        disable 'InvalidPackage'
+        lintConfig file("lint.xml")
+    }
+//    dexOptions {
+//        incremental true
+//        javaMaxHeapSize "8g"
+//    }
+}
+allprojects {
+    repositories {
+        jcenter()
+        flatDir {
+            dirs 'aars' //this way we can find the .aar file in libs folder
+        }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://jitpack.io" }
+        maven { url "http://dl.bintray.com/tbruyelle/tbruyelle" }
+        maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
+    }
+}
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile project(':library')
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.3.0'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.0.0-RC1'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta4'
+    compile 'com.github.aurae.retrofit:converter-logansquare:1.1.0'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile 'com.github.bumptech.glide:okhttp-integration:1.3.1@aar'
+    compile 'net.grandcentrix.tray:tray:1.0.0-rc3'
+
+}
