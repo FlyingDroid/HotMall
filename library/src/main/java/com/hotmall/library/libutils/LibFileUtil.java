@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.text.DecimalFormat;
 
 /**
  * Created by zhsheng on 2015/9/13.
@@ -184,5 +185,45 @@ public class LibFileUtil {
             e.printStackTrace();
         }
         return Result;
+    }
+
+
+    /**
+     * 获取文件夹大小
+     *
+     * @param file File实例
+     * @return long
+     * @throws Exception
+     */
+    public static long getFolderSize(File file) throws Exception {
+        long size = 0;
+        File[] fileList = file.listFiles();
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].isDirectory()) {
+                size = size + getFolderSize(fileList[i]);
+            } else {
+                size = size + fileList[i].length();
+            }
+        }
+        return size;
+    }
+
+    // 转换文件大小
+    public static String FormatFileSize(long fileS) {
+        if (fileS == 0) {
+            return "0K";
+        }
+        DecimalFormat df = new DecimalFormat("#.0");
+        String fileSizeString = "";
+        if (fileS < 1024) {
+            fileSizeString = df.format((double) fileS) + "B";
+        } else if (fileS < 1048576) {
+            fileSizeString = df.format((double) fileS / 1024) + "K";
+        } else if (fileS < 1073741824) {
+            fileSizeString = df.format((double) fileS / 1048576) + "M";
+        } else {
+            fileSizeString = df.format((double) fileS / 1073741824) + "G";
+        }
+        return fileSizeString;
     }
 }
