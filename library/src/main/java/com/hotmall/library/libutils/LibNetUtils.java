@@ -3,9 +3,6 @@ package com.hotmall.library.libutils;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -93,9 +90,4 @@ public class LibNetUtils {
         }
     }
 
-    public static boolean activityExists(Context context, Intent intent) {
-        final PackageManager mgr = context.getPackageManager();
-        final ResolveInfo info = mgr.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return (info != null);
-    }
 }

@@ -1,4 +1,4 @@
-package com.hotmall.utils;
+package com.hotmall.common;
 
 import android.content.Context;
 

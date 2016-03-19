@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.hotmall.base.BaseActivity;
+import com.hotmall.model.api.API;
 import com.hotmall.ui.LoginActivity;
 
 import java.lang.ref.WeakReference;

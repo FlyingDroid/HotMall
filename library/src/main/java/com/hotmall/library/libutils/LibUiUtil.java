@@ -2,6 +2,9 @@ package com.hotmall.library.libutils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -33,5 +36,18 @@ public class LibUiUtil {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+    }
+
+    /**
+     * 判断要打开的Activity是否存在
+     *
+     * @param context
+     * @param intent
+     * @return
+     */
+    public static boolean activityExists(Context context, Intent intent) {
+        final PackageManager mgr = context.getPackageManager();
+        final ResolveInfo info = mgr.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return (info != null);
     }
 }

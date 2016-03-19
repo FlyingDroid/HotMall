@@ -2,6 +2,8 @@ package com.hotmall.utils;
 
 import android.text.TextUtils;
 
+import com.hotmall.common.UtilCtInit;
+
 import java.util.HashMap;
 import java.util.Map;
 

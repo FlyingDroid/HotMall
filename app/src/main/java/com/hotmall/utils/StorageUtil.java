@@ -6,6 +6,7 @@ import android.os.StatFs;
 import android.util.Log;
 
 import com.hotmall.common.ConstantValue;
+import com.hotmall.common.UtilCtInit;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
