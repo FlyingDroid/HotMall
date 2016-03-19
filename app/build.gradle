@@ -37,6 +37,8 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "API_URL", '"http://github.com"'
+            buildConfigField ("boolean", "LOG_DEBUG", "true")
+            buildConfigField ("boolean", "IN_MOCK", "true")
             versionNameSuffix '-' + new Date().format("yyyyMMddHHmm")
         }
         release {

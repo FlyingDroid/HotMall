@@ -1,6 +1,5 @@
 package com.hotmall.utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.os.StatFs;
@@ -23,8 +22,8 @@ public class StorageUtil {
      *
      * @return dir like /mnt/sdcard/Android/data/包名/cache
      */
-    public static File getExternalCacheDir(Context context) {
-        return context.getExternalCacheDir();
+    public static File getExternalCacheDir() {
+        return UtilCtInit.getContext().getExternalCacheDir();
     }
 
     /**
@@ -32,8 +31,8 @@ public class StorageUtil {
      *
      * @return dir like /data/包名/cache
      */
-    public static File getCacheDir(Context context) {
-        return context.getCacheDir();
+    public static File getCacheDir() {
+        return UtilCtInit.getContext().getCacheDir();
     }
 
     /**
@@ -54,10 +53,10 @@ public class StorageUtil {
      *
      * @return dir like /mnt/sdcard/Download
      */
-    public static File getDownloadDir(Context context) {
-        File downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+    public static File getDownloadDir() {
+        File downloadDir = UtilCtInit.getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
         if (downloadDir == null) {
-            downloadDir = context.getFilesDir();
+            downloadDir = UtilCtInit.getContext().getFilesDir();
         }
         return downloadDir;
     }

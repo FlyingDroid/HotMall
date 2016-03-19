@@ -7,6 +7,7 @@ import com.hotmall.library.Remember;
  * Created by zhsheng on 2016/3/17.
  */
 public class FlashCache extends Remember {
+
     /**
      * 存储用户ID
      */
@@ -19,5 +20,9 @@ public class FlashCache extends Remember {
      */
     public static String getUserId() {
         return getString(ConstantKey.USER_ID, "");
+    }
+
+    public static String getUserToken() {
+        return getString(ConstantKey.USER_TOKEN, null);
     }
 }

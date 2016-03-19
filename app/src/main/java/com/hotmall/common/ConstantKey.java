@@ -5,4 +5,5 @@ package com.hotmall.common;
  */
 public interface ConstantKey {
     String USER_ID = "user_id";
+    String USER_TOKEN = "user_token";
 }
