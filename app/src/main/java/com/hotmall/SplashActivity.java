@@ -45,11 +45,15 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
+    protected void setLayoutId() {
+        layoutId = R.layout.activity_splash;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
         ivLauncherBanner = finder.imageView(R.id.iv_launcher_banner);
         finder.find(R.id.btn_detail).setOnClickListener(this);
         finder.find(R.id.btn_next).setOnClickListener(this);

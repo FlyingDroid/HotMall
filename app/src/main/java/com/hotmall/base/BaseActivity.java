@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Window;
@@ -17,16 +18,20 @@ import java.io.Serializable;
 /**
  * Created by zhsheng on 2016/1/16.
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     protected ViewFinder finder;
     protected Activity activity;
+    @LayoutRes
     protected int layoutId;
+
+    protected abstract void setLayoutId();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = this;
+        setLayoutId();
         super.setContentView(layoutId);
+        activity = this;
         finder = new ViewFinder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();

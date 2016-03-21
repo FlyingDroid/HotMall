@@ -19,9 +19,13 @@ public class LoginActivity extends BaseActivity {
     private EditText mPasswordView;
 
     @Override
+    protected void setLayoutId() {
+        layoutId = R.layout.activity_login;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         // Set up the login form.
         mAccountView = (AutoCompleteTextView) findViewById(R.id.account);
         Button button = finder.find(R.id.email_sign_in_button);
