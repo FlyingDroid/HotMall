@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.hotmall.library.StatusBarCompat;
+import com.hotmall.R;
 import com.hotmall.library.ViewFinder;
 
 import java.io.Serializable;
@@ -20,11 +20,13 @@ import java.io.Serializable;
 public class BaseActivity extends AppCompatActivity {
     protected ViewFinder finder;
     protected Activity activity;
+    protected int layoutId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
         super.onCreate(savedInstanceState);
+        activity = this;
+        super.setContentView(layoutId);
         finder = new ViewFinder(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
@@ -32,14 +34,22 @@ public class BaseActivity extends AppCompatActivity {
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+        initToolbar();
     }
 
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        finder = new ViewFinder(this);
-
+    protected void onDestroy() {
+        setContentView(R.layout.layout_null_content);
+        System.runFinalization();//强制垃圾回收
+        super.onDestroy();
     }
 
     /**
