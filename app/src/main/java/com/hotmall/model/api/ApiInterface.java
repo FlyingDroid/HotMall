@@ -9,7 +9,7 @@ import rx.Observable;
 /**
  * Created by zhsheng on 2016/3/17.
  */
-public interface ApiInterface {
+public interface ApiInterface extends BaseApi {
     String HOST = "https://api.heweather.com/x3/";
 
     @GET("weather")

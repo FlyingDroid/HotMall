@@ -25,19 +25,38 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
 public class API {
 
-    private static ApiInterface apiService = null;
-
-    private static Retrofit retrofit = null;
-
-    private static OkHttpClient okHttpClient = null;
 
     private static final String TAG = API.class.getSimpleName();
-
-    /**
-     * 初始化
-     */
+    private static ApiInterface apiService;
+    private static ApiWeather apiWeather;
 
     public static void init() {
+        OkHttpClient okHttpClient = initReqClient();
+        Executor executor = Executors.newCachedThreadPool();
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+        Retrofit retrofit = retrofitBuilder
+                .baseUrl(ApiInterface.HOST)
+                .client(okHttpClient)
+                .callbackExecutor(executor)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(ToStringConverterFactory.create())
+                .addConverterFactory(LoganSquareConverterFactory.create())
+                .build();
+        apiService = retrofit.create(ApiInterface.class);
+
+        retrofit = retrofitBuilder
+                .baseUrl(ApiWeather.HOST)
+                .client(okHttpClient)
+                .callbackExecutor(executor)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(ToStringConverterFactory.create())
+                .addConverterFactory(LoganSquareConverterFactory.create())
+                .build();
+        apiWeather = retrofit.create(ApiWeather.class);
+
+    }
+
+    private static OkHttpClient initReqClient() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
         httpClientBuilder.writeTimeout(30, TimeUnit.SECONDS);
@@ -67,19 +86,7 @@ public class API {
             interceptor.setLevel(HttpLoggingInterceptor.Level.DEFINE);
             httpClientBuilder.interceptors().add(interceptor);
         }
-        OkHttpClient okHttpClient = httpClientBuilder.build();
-
-        Executor executor = Executors.newCachedThreadPool();
-        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
-        retrofit = retrofitBuilder
-                .baseUrl(ApiInterface.HOST)
-                .client(okHttpClient)
-                .callbackExecutor(executor)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(ToStringConverterFactory.create())
-                .addConverterFactory(LoganSquareConverterFactory.create())
-                .build();
-        apiService = retrofit.create(ApiInterface.class);
+        return httpClientBuilder.build();
     }
 
 
@@ -89,18 +96,10 @@ public class API {
         return getApiService();
     }
 
-
-    public static Retrofit getRetrofit() {
-        if (retrofit != null) return retrofit;
+    public static ApiWeather getWeatherApiService() {
+        if (apiWeather != null) return apiWeather;
         init();
-        return getRetrofit();
-    }
-
-
-    public static OkHttpClient getOkHttpClient() {
-        if (okHttpClient != null) return okHttpClient;
-        init();
-        return getOkHttpClient();
+        return getWeatherApiService();
     }
 
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">热店</string>
 
     <string name="title_activity_login">登录</string>
 

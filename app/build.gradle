@@ -100,6 +100,7 @@ dependencies {
     compile rootProject.ext.dependencies["butterknife"]
     compile rootProject.ext.dependencies["rxjava"]
     compile rootProject.ext.dependencies["rxandroid"]
+
     compile rootProject.ext.dependencies["okhttp-urlconnection"]
     compile rootProject.ext.dependencies["okhttp"]
     compile rootProject.ext.dependencies["okio"]
