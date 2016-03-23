@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Process;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,7 +12,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.hotmall.base.BaseActivity;
-import com.hotmall.model.api.API;
 import com.hotmall.ui.LoginActivity;
 
 import java.lang.ref.WeakReference;
@@ -25,7 +22,6 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     public static final int MSG_NEXT = 100;
     private ImageView ivLauncherBanner;
     private MyHandler myHandler;
-    private String TAG = "SplashActivity";
 
     static class MyHandler extends Handler {
         // WeakReference to the outer class's instance.
@@ -44,9 +40,10 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+
     @Override
-    protected void setLayoutId() {
-        layoutId = R.layout.activity_splash;
+    protected int setLayoutId() {
+        return R.layout.activity_splash;
     }
 
     @Override
