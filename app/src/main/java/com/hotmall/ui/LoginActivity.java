@@ -19,8 +19,8 @@ public class LoginActivity extends BaseActivity {
     private EditText mPasswordView;
 
     @Override
-    protected void setLayoutId() {
-        layoutId = R.layout.activity_login;
+    protected int setLayoutId() {
+        return R.layout.activity_login;
     }
 
     @Override

@@ -40,10 +40,18 @@ android {
             buildConfigField ("boolean", "LOG_DEBUG", "true")
             buildConfigField ("boolean", "IN_MOCK", "true")
             versionNameSuffix '-' + new Date().format("yyyyMMddHHmm")
+            if (keyStore.exists()) {
+                println "hotmall: using project's key"
+                signingConfig signingConfigs.signingConfig
+            } else {
+                println "hotmall: using default key"
+            }
         }
         release {
             buildConfigField "String", "API_URL", '"http://github.com"'
             buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField ("boolean", "IN_MOCK", "true")
+            versionNameSuffix '-' + new Date().format("yyyyMMddHHmm")
             debuggable false
             minifyEnabled true
             shrinkResources true

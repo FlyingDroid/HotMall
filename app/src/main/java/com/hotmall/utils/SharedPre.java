@@ -6,7 +6,7 @@ import com.hotmall.library.Remember;
 /**
  * Created by zhsheng on 2016/3/17.
  */
-public class FlashCache extends Remember {
+public class SharedPre extends Remember {
 
     /**
      * 存储用户ID

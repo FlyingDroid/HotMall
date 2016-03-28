@@ -28,7 +28,6 @@ public class API {
 
     private static final String TAG = API.class.getSimpleName();
     private static ApiInterface apiService;
-    private static ApiWeather apiWeather;
 
     public static void init() {
         OkHttpClient okHttpClient = initReqClient();
@@ -44,16 +43,49 @@ public class API {
                 .build();
         apiService = retrofit.create(ApiInterface.class);
 
-        retrofit = retrofitBuilder
-                .baseUrl(ApiWeather.HOST)
+    }
+
+    /**
+     * Creates a retrofit service from an arbitrary class (clazz)
+     *
+     * @param clazz Java interface of the retrofit service
+     * @return retrofit service with defined endpoint
+     */
+    public static <T> T createApiService(final Class<T> clazz) {
+        OkHttpClient okHttpClient = initReqClient();
+        Executor executor = Executors.newCachedThreadPool();
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+        Retrofit retrofit = retrofitBuilder
+                .baseUrl(BuildConfig.API_URL)
                 .client(okHttpClient)
                 .callbackExecutor(executor)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(ToStringConverterFactory.create())
                 .addConverterFactory(LoganSquareConverterFactory.create())
                 .build();
-        apiWeather = retrofit.create(ApiWeather.class);
+        return retrofit.create(clazz);
+    }
 
+    /**
+     * Creates a retrofit service from an arbitrary class (clazz)
+     *
+     * @param clazz   Java interface of the retrofit service
+     * @param rootUrl REST endpoint url
+     * @return retrofit service with defined endpoint
+     */
+    public static <T> T createApiService(final Class<T> clazz, final String rootUrl) {
+        OkHttpClient okHttpClient = initReqClient();
+        Executor executor = Executors.newCachedThreadPool();
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+        Retrofit retrofit = retrofitBuilder
+                .baseUrl(rootUrl)
+                .client(okHttpClient)
+                .callbackExecutor(executor)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(ToStringConverterFactory.create())
+                .addConverterFactory(LoganSquareConverterFactory.create())
+                .build();
+        return retrofit.create(clazz);
     }
 
     private static OkHttpClient initReqClient() {
@@ -95,13 +127,6 @@ public class API {
         init();
         return getApiService();
     }
-
-    public static ApiWeather getWeatherApiService() {
-        if (apiWeather != null) return apiWeather;
-        init();
-        return getWeatherApiService();
-    }
-
 
     public static void disposeFailureInfo(Throwable t, Context context, View view) {
         if (t.toString().contains("GaiException") || t.toString().contains("SocketTimeoutException") ||

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
  * Created by zhsheng on 2016/1/16.
  */
 public class BaseFragment extends Fragment {
+    protected final String TAG = this.getClass().getSimpleName();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

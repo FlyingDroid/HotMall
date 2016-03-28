@@ -24,7 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Activity activity;
     private CompositeSubscription mCompositeSubscription;
     private Toast toast;
-
+    protected final String TAG = this.getClass().getSimpleName();
     protected abstract int setLayoutId();
 
     @Override
