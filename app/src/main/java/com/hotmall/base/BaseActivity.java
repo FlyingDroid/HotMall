@@ -2,6 +2,7 @@ package com.hotmall.base;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +13,9 @@ import android.widget.Toast;
 
 import com.hotmall.R;
 import com.hotmall.library.ViewFinder;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
+import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -25,6 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private CompositeSubscription mCompositeSubscription;
     private Toast toast;
     protected final String TAG = this.getClass().getSimpleName();
+
     protected abstract int setLayoutId();
 
     @Override
@@ -94,5 +98,25 @@ public abstract class BaseActivity extends AppCompatActivity {
             toast.setText(msg);
         }
         toast.show();
+    }
+
+    /**
+     * Manifest.permission.WRITE_EXTERNAL_STORAGE
+     *
+     * @param permissions
+     * @return
+     */
+    private Observable.Transformer<Void, Void> ensurePermissions(@NonNull String... permissions) {
+        return source -> source
+                .compose(RxPermissions.getInstance(this).ensure(permissions))
+                .filter(granted -> {
+                    if (granted) {
+                        return true;
+                    } else {
+                        showToast(R.string.no_permission);
+                        return false;
+                    }
+                })
+                .map(granted -> null);
     }
 }
