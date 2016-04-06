@@ -10,9 +10,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.hotmall.base.BaseActivity;
 import com.hotmall.ui.LoginActivity;
+import com.hotmall.ui.MainActivity;
+import com.hotmall.utils.SharedPre;
 
 import java.lang.ref.WeakReference;
 
@@ -35,7 +36,12 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         public void handleMessage(Message msg) {
             SplashActivity outer = mOuter.get();
             if (outer != null) {
-                // outer.launcherNextStep();
+                // 是否已经登录过
+                if (!outer.judgeLoginAccount()) {
+                    outer.goLogin();
+                } else {
+                    outer.goMain();
+                }
             }
         }
     }
@@ -54,17 +60,11 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         ivLauncherBanner = finder.imageView(R.id.iv_launcher_banner);
         finder.find(R.id.btn_detail).setOnClickListener(this);
         finder.find(R.id.btn_next).setOnClickListener(this);
+        ivLauncherBanner.setImageResource(R.mipmap.four_season);
         myHandler = new MyHandler(this);
         myHandler.sendEmptyMessageDelayed(MSG_NEXT, 3000);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Glide.with(this)
-                .load("http://tse2.mm.bing.net/th?id=OIP.M61f994f7c460b60f94c7c70e6f87be0do2&pid=15.1")
-                .into(ivLauncherBanner);
-    }
 
     @Override
     public void onClick(View v) {
@@ -73,13 +73,17 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.btn_next:
                 myHandler.removeMessages(MSG_NEXT);
-                launcherNextStep();
+                goLogin();
                 break;
         }
     }
 
-    private void launcherNextStep() {
+    private void goLogin() {
         startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    private void goMain() {
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
@@ -89,8 +93,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
      * @return
      */
     private boolean judgeLoginAccount() {
-        String userAccount = "";
-        String userPassword = "";
-        return !(TextUtils.isEmpty(userAccount) && !TextUtils.isEmpty(userPassword));
+        String userId = SharedPre.getUserId();
+        return !(TextUtils.isEmpty(userId));
     }
 }

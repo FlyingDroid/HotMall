@@ -15,6 +15,7 @@ import com.hotmall.R;
 import com.hotmall.library.ViewFinder;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -40,6 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             super.setContentView(new Space(activity));
         }
+        ButterKnife.bind(this);
         finder = new ViewFinder(this);
         initToolbar();
     }

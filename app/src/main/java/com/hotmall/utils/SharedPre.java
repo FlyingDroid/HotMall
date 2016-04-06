@@ -1,5 +1,6 @@
 package com.hotmall.utils;
 
+import com.hotmall.BuildConfig;
 import com.hotmall.common.ConstantKey;
 import com.hotmall.library.Remember;
 
@@ -24,5 +25,11 @@ public class SharedPre extends Remember {
 
     public static String getUserToken() {
         return getString(ConstantKey.USER_TOKEN, null);
+    }
+    /**
+     * 获取默认SharedPreferencesName
+     */
+    public static String getDefaultSharedPreferencesName() {
+        return BuildConfig.APPLICATION_ID + "_preferences";
     }
 }

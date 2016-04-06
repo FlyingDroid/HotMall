@@ -127,5 +127,4 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.6.0@aar'
     apt "com.github.Raizlabs.DBFlow:dbflow-processor:3.0.0-beta5"
-    compile project(':OneSDK')
 }
