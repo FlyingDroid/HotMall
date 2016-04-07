@@ -263,3 +263,4 @@
 -keep class com.coremedia.iso.** { *; }
 -keep class com.googlecode.mp4parser.** { *; }
 
+-keep class com.jpardogo.android.googleprogressbar.** { *; }

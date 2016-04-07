@@ -1,7 +1,5 @@
 package com.hotmall.ui;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
@@ -13,21 +11,20 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.hotmall.R;
 import com.hotmall.base.BaseActivity;
+import com.hotmall.library.encrypt.MD5;
+import com.hotmall.utils.SharedPre;
+import com.hotmall.widget.LoadingDialog;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
 
-
-    @Bind(R.id.login_progress)
-    ProgressBar loginProgress;
     @Bind(R.id.email)
     AutoCompleteTextView emailView;
     @Bind(R.id.password)
@@ -36,6 +33,11 @@ public class LoginActivity extends BaseActivity {
     Button emailSignInButton;
     @Bind(R.id.login_form)
     ScrollView loginForm;
+    @Bind(R.id.tv_register_account)
+    TextView tvRegisterAccount;
+    @Bind(R.id.tv_forget_pw)
+    TextView tvForgetPw;
+    private LoadingDialog loadingDialog;
 
     @Override
     protected int setLayoutId() {
@@ -98,11 +100,13 @@ public class LoginActivity extends BaseActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
+            // Show a progress spinner, and kick off a loading_background task to
             // perform the user login attempt.
             showProgress(true);
             //提交登录信息
-
+            SharedPre.setUserAccount(email);
+            SharedPre.setUserPW(password);
+            SharedPre.setUserId(MD5.encrypt(email + password));
             //验证成功
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -121,34 +125,13 @@ public class LoginActivity extends BaseActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
-            loginForm.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-            loginProgress.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog();
+        }
+        if (show) {
+            loadingDialog.show(getFragmentManager(), "");
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
+            loadingDialog.dismiss();
         }
     }
 

@@ -9,4 +9,11 @@
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="CircularFillableLoaders">
+        <attr name="cfl_progress" format="integer" />
+        <attr name="cfl_border" format="boolean" />
+        <attr name="cfl_border_width" format="dimension" />
+        <attr name="cfl_wave_color" format="color" />
+        <attr name="cfl_wave_amplitude" format="float" />
+    </declare-styleable>
 </resources>

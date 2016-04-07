@@ -22,11 +22,11 @@
     <drawable name="search_bar_default_color">#ff000000</drawable>
     <drawable name="safe_mode_background">#60000000</drawable>
     <!-- Background drawable that can be used for a transparent activity to
-         be able to display a dark UI: this darkens its background to make
+         be able to display a dark UI: this darkens its loading_background to make
          a dark (default theme) UI more visible. -->
     <drawable name="screen_background_dark_transparent">#80000000</drawable>
     <!-- Background drawable that can be used for a transparent activity to
-         be able to display a light UI: this lightens its background to make
+         be able to display a light UI: this lightens its loading_background to make
          a light UI more visible. -->
     <drawable name="screen_background_light_transparent">#80ffffff</drawable>
     <color name="safe_mode_text">#80ffffff</color>
