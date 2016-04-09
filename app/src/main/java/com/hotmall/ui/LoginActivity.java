@@ -120,20 +120,7 @@ public class LoginActivity extends BaseActivity {
         return password.length() > 4;
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        if (loadingDialog == null) {
-            loadingDialog = new LoadingDialog();
-        }
-        if (show) {
-            loadingDialog.show(getFragmentManager(), "");
-        } else {
-            loadingDialog.dismiss();
-        }
-    }
+
 
 }
 

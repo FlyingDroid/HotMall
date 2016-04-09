@@ -73,7 +73,11 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.btn_next:
                 myHandler.removeMessages(MSG_NEXT);
-                goLogin();
+                if (judgeLoginAccount()) {
+                    goMain();
+                } else {
+                    goLogin();
+                }
                 break;
         }
     }

@@ -12,9 +12,11 @@ import android.view.ViewGroup;
  */
 public class BaseFragment extends Fragment {
     protected final String TAG = this.getClass().getSimpleName();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.hotmall.R;
 import com.hotmall.library.ViewFinder;
+import com.hotmall.widget.LoadingDialog;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import butterknife.ButterKnife;
@@ -29,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private CompositeSubscription mCompositeSubscription;
     private Toast toast;
     protected final String TAG = this.getClass().getSimpleName();
+    private LoadingDialog loadingDialog;
 
     protected abstract int setLayoutId();
 
@@ -120,5 +122,19 @@ public abstract class BaseActivity extends AppCompatActivity {
                     }
                 })
                 .map(granted -> null);
+    }
+
+    /**
+     * Show or hide the progress UI and hides.
+     */
+    public void showProgress(final boolean show) {
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog();
+        }
+        if (show) {
+            loadingDialog.show(getFragmentManager(), "");
+        } else {
+            loadingDialog.dismiss();
+        }
     }
 }

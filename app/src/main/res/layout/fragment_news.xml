@@ -2,7 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hotmall.ui.ReadFragment">
+    tools:context=".ui.NewsFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="有事" />
 
 </FrameLayout>

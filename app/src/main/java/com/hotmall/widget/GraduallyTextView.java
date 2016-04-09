@@ -1,9 +1,11 @@
 package com.hotmall.widget;
 
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -51,7 +53,7 @@ public class GraduallyTextView extends EditText {
     public void init() {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
-        setBackground(null);
+        setBackgroundDrawable(null);
         setCursorVisible(false);
         setFocusable(false);
         setEnabled(false);
@@ -110,6 +112,7 @@ public class GraduallyTextView extends EditText {
     }
 
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onVisibilityChanged(View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
@@ -118,14 +121,14 @@ public class GraduallyTextView extends EditText {
         }
         if (visibility == View.VISIBLE) {
             valueAnimator.resume();
-        }
-        else {
+        } else {
             valueAnimator.pause();
         }
     }
 
 
-    @Override protected void onDraw(Canvas canvas) {
+    @Override
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (!isStop) {
             mPaint.setAlpha(255);
