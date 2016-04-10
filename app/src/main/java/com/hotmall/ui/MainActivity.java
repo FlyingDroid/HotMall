@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.hotmall.adapter.MainFragmentAdapter;
 import com.hotmall.R;
+import com.hotmall.adapter.MainFragmentAdapter;
 import com.hotmall.base.BaseActivity;
 import com.hotmall.base.BaseFragment;
 import com.joanzapata.iconify.Icon;
@@ -42,6 +42,8 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
     private TextView tvFont;
     private TextView tvText;
     private ContextMenuDialogFragment menuDialogFragment;
+    private boolean isExit;
+    private long time;
 
     @Override
     protected int setLayoutId() {
@@ -189,6 +191,22 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
                 break;
             case 3://雷达
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!isExit) {
+            showToast("再按一次返回键退出");
+            isExit = true;
+            time = System.currentTimeMillis();
+        } else {
+            //退出
+            if (System.currentTimeMillis() - time < 2000) {
+                super.onBackPressed();
+            } else {
+                isExit = false;
+            }
         }
     }
 }

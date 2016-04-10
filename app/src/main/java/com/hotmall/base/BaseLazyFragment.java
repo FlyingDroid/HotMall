@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hotmall.library.LibLogger;
+
 /**
  * Created by zhangsheng on 2016/4/9.
  */
